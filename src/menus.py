@@ -1,5 +1,6 @@
 # menu que se muestre al iniciar el juego e interfas que se muestre mientras se valla jugando 
 # interfaz de cuando se gana y se pierde
+# El pana
 
 def tablero():
      pantalla = [
