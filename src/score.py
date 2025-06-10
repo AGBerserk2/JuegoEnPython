@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 # mostrar los puntos de cada jugador
 # gregory
+=======
+>>>>>>> 32d86c9c7fd78f902c072e8db0f2fff5249630ea
 
 class Score:
     def __init__(self):

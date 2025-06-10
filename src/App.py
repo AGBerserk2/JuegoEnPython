@@ -1,4 +1,5 @@
 # donde se ejecutara la app
+<<<<<<< HEAD
 from logica import es_movimiento_valido, colocar_pieza, colores_por_jugador, mostrar_tablero
 from score import Score
 from figuras import piezas
@@ -41,3 +42,10 @@ movimiento.colores_por_jugador = colores_por_jugador
 import os
 os.system('python movimiento.py')  # Ejecutar movimiento.py
 
+=======
+import movimiento;
+from menu import Menu;
+
+if __name__ == "__main__":
+    opcion_seleccionada = Menu.mostrar_menu()
+>>>>>>> 32d86c9c7fd78f902c072e8db0f2fff5249630ea

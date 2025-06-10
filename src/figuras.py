@@ -1,5 +1,3 @@
-# creacion de todas las figuras
-# ya
 
 def rotar_pieza(pieza):
     # Transponer y luego invertir filas (rotación 90° horaria)
