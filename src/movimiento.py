@@ -3,11 +3,7 @@ from figuras import rotar_pieza
 import os
 import time
 import keyboard
-<<<<<<< HEAD
 
-
-=======
->>>>>>> d90a99ef2a58bd3fa75871248a7e6f062cfd770b
 
 TABLERO_ALTO = 20
 TABLERO_ANCHO = 20
