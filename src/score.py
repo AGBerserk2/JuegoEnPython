@@ -1,4 +1,7 @@
 
+# mostrar los puntos de cada jugador
+# gregory
+
 class Score:
     def __init__(self):
         self.puntos_por_jugador = {}
@@ -13,3 +16,14 @@ class Score:
 
     def obtener_puntos(self, jugador_nombre):
         return self.puntos_por_jugador[jugador_nombre]
+
+    def determinar_ganador(self):
+        puntos_j1 = self.obtener_puntos("Jugador 1")
+        puntos_j2 = self.obtener_puntos("Jugador 2")
+        if puntos_j1 > puntos_j2:
+            return "Jugador 1"
+        elif puntos_j2 > puntos_j1:
+            return "Jugador 2"
+        else:
+            return "Empate"
+
