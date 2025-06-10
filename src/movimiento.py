@@ -6,15 +6,7 @@ from score import Score
 from logica import Logica
 import random
 
-<<<<<<< HEAD
-
-TABLERO_ALTO = 20
-TABLERO_ANCHO = 20
-
-class Score:
-=======
 class Movimiento:
->>>>>>> 32d86c9c7fd78f902c072e8db0f2fff5249630ea
     def __init__(self):
         self.TABLERO_ALTO = 15
         self.TABLERO_ANCHO = 20
