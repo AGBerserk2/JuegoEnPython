@@ -7,8 +7,8 @@ from figuras import rotar_pieza
 import os
 import time
 import keyboard
-from colorama import init
-init()
+
+
 
 TABLERO_ALTO = 20
 TABLERO_ANCHO = 20
