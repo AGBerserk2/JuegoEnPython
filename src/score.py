@@ -1,5 +1,4 @@
-# mostrar los puntos de cada jugador
-# gregory
+
 class Score:
     def __init__(self):
         self.puntos_por_jugador = {}
