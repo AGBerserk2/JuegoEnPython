@@ -28,4 +28,3 @@ def tablero():
      for pix in pantalla:
          print("".join(pix))
          
-tablero()
