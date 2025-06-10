@@ -1,49 +1,55 @@
 # creacion de todas las figuras
 # ya
 
-class figuras():
-    def dibujar_pieza(pieza):
-        for fila in pieza:
-            print(''.join('⬜' if celda == 1 else '  ' for celda in fila))
-        print()  # Espacio entre piezas
+def rotar_pieza(pieza):
+    # Transponer y luego invertir filas (rotación 90° horaria)
+    return [list(fila) for fila in zip(*pieza[::-1])]
 
-    def piezas():
-    # 1. Monomino
-        monomino = [[1]]
-        # 2. Domino
-        domino = [[1, 1]]
-        # 3. Tromino en línea
-        tromino_line = [[1, 1, 1]]
-        # 4. Tromino en L
-        tromino_L = [
-            [1, 0],
-            [1, 1]
-        ]
-        # 5. Tetromino en L
-        tetromino_L = [
-            [1, 0, 0],
-            [1, 1, 1]
-        ]
-        # 6. Tetromino en T
-        tetromino_T = [
-            [1, 1, 1],
-            [0, 1, 0]
-        ]
-        # 7. Tetromino cuadrado
-        tetromino_square = [
-            [1, 1],
-            [1, 1]
-        ]
-        # 8. Tetromino en Z
-        tetromino_Z = [
-            [1, 1, 0],
-            [0, 1, 1]
-        ]
-        # 9. Pentomino en línea
-        pentomino_line = [[1, 1, 1, 1, 1]]
-        # 10. Pentomino cruz
-        pentomino_plus = [
-            [0, 1, 0],
-            [1, 1, 1],
-            [0, 1, 0]
-        ]
+def dibujar_pieza(pieza):
+    for fila in pieza:
+        print(''.join('⬜' if celda == 1 else '  ' for celda in fila))
+    print()  # Espacio entre piezas
+
+def piezas(figura):
+    match figura:
+        case 1:
+            return [[1]]
+        case 2:
+            return [[1, 1]]
+        case 3:
+            return [[1, 1, 1]]
+        case 4:
+            return [
+                [1, 0],
+                [1, 1]
+            ]
+        case 5:
+            return [
+                [1, 0, 0],
+                [1, 1, 1]
+            ]
+        case 6:
+            return [
+                [1, 1, 1],
+                [0, 1, 0]
+            ]
+        case 7:
+            return [
+                [1, 1],
+                [1, 1]
+            ]
+        case 8:
+            return [
+                [1, 1, 0],
+                [0, 1, 1]
+            ]
+        case 9:
+            return [[1, 1, 1, 1, 1]]
+        case 0:
+            return [
+                [0, 1, 0],
+                [1, 1, 1],
+                [0, 1, 0]
+            ]
+        case _:
+            return [[1]]
