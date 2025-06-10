@@ -34,7 +34,7 @@ class Logica:
                                 for jj in range(len(otra[0])):
                                     if otra[ii][jj] == 1 and ox == cx + jj and oy == cy + ii:
                                         return True
-        return False if colocadas_jugador else True  # primera pieza puede ir sin adyacencia
+        return False if colocadas_jugador else True
 
     def es_contacto_lateral(self, pieza, x, y, colocadas, jugador):
         colocadas_jugador = self.filtrar_colocadas_por_jugador(colocadas, jugador)
@@ -63,6 +63,42 @@ class Logica:
 
     def filtrar_colocadas_por_jugador(self, colocadas, jugador):
         return [(pieza, x, y) for pieza, x, y, j in colocadas if j == jugador]
+
+    def puede_jugar(self, piezas_disponibles, colocadas, jugador):
+        for pieza in piezas_disponibles:
+            for rot in range(4):  # Probar las 4 rotaciones
+                pieza_rotada = pieza
+                for _ in range(rot):
+                    pieza_rotada = rotar_pieza(pieza_rotada)
+                for y in range(self.alto):
+                    for x in range(self.ancho):
+                        if self.es_posicion_valida(pieza_rotada, x, y, colocadas):
+                            if not self.es_contacto_lateral(pieza_rotada, x, y, colocadas, jugador):
+                                piezas_jugador = self.filtrar_colocadas_por_jugador(colocadas, jugador)
+                                turno = len(piezas_jugador)
+                                if turno == 0:
+                                    if self.es_primera_colocacion_valida(pieza_rotada, x, y, jugador):
+                                        return True
+                                elif self.es_adyacente_diagonal(pieza_rotada, x, y, colocadas, jugador):
+                                    return True
+        return False
+
+    def terminar_juego(self, piezas_jugador1, piezas_jugador2, colocadas):
+        return not (self.puede_jugar(piezas_jugador1, colocadas, "Jugador 1") or
+                    self.puede_jugar(piezas_jugador2, colocadas, "Jugador 2"))
+
+    def mostrar_resultado(self, score):
+        puntos_j1, puntos_j2 = score.obtener_puntos("Jugador 1"), score.obtener_puntos("Jugador 2")
+        print("\n=== Resultado Final ===")
+        print(f"Puntaje Jugador 1: {puntos_j1}")
+        print(f"Puntaje Jugador 2: {puntos_j2}")
+        if puntos_j1 > puntos_j2:
+            print("¡Jugador 1 es el ganador!")
+        elif puntos_j2 > puntos_j1:
+            print("¡Jugador 2 es el ganador!")
+        else:
+            print("¡Empate!")
+
 
 
 
