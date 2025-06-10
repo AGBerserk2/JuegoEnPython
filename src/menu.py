@@ -16,6 +16,7 @@ class Menu:
     color_seleccionado = Fore.CYAN + Style.BRIGHT
     color_texto = Fore.RED
     
+    @classmethod
     def mostrar_menu(cls):
         key_pressed = None
         while key_pressed != 'enter':
@@ -38,6 +39,7 @@ class Menu:
         
         return cls.selected_index + 1
     
+    @classmethod
     def mostrar_opciones(cls):
         # Mostrar el título ASCII
         print(Fore.RED + """
@@ -56,7 +58,7 @@ class Menu:
         print(cls.color_fondo + """
                                      ╔═════════════════════════════════════════════════════════════════════════════════╗
                                      ║                                ¿Modo de juego?                                  ║
-                                     ║                      🔷 ---     Lets  START!!!    --- 🔷                        ║
+                                     ║                      🔷 ---     Lets  START!!!     --- 🔷                        ║
                                      ║                                                                                 ║
                                      ╚═════════════════════════════════════════════════════════════════════════════════╝
 
