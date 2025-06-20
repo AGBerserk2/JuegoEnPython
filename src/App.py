@@ -1,36 +1,43 @@
-# donde se ejecutara la app
-
-from menu import Menu
-from movimiento import Movimiento
-import os
-
-def guardar_historial(puntajes):
-    with open("historial.txt", "a") as f:
-        f.write(f"Puntajes: {puntajes}\n")
-
-if __name__ == "__main__":
-    while True:
-        opcion_seleccionada = Menu.mostrar_menu()
-        if opcion_seleccionada == 2:  # Jugar
-            juego = Movimiento()
-            juego.movimiento_tablero()
-            # Guardar puntajes al finalizar
-            puntajes = {
-                "Jugador 1": juego.score.obtener_puntos("Jugador 1"),
-                "Jugador 2": juego.score.obtener_puntos("Jugador 2")
-            }
-            guardar_historial(puntajes)
-        elif opcion_seleccionada == 3:  # Historial
-            os.system('cls' if os.name == 'nt' else 'clear')
-            try:
-                with open("historial.txt", "r") as f:
-                    print("=== Historial de Partidas ===")
-                    print(f.read())
-            except FileNotFoundError:
-                print("No hay historial de partidas.")
-            input("Presiona Enter para continuar...")
-        elif opcion_seleccionada == 4:  # Salir
-            os.system('cls' if os.name == 'nt' else 'clear')
-            print("¿Seguro que quieres salir? (s/n)")
-            if input().lower() == 's':
+from menu import Menu  
+from movimiento import Movimiento  
+import os  
+  
+def guardar_historial(puntajes):  
+    with open("historial.txt", "a") as f:  
+        f.write(f"Puntajes: {puntajes}\n")  
+  
+if __name__ == "__main__":  
+    while True:  
+        opcion_seleccionada = Menu.mostrar_menu()  
+        if opcion_seleccionada == 1:  # Jugar vs Humano  
+            juego = Movimiento(modo_ia=False)  
+            juego.movimiento_tablero()  
+            # Guardar puntajes al finalizar  
+            puntajes = {  
+                "Jugador 1": juego.score.obtener_puntos("Jugador 1"),  
+                "Jugador 2": juego.score.obtener_puntos("Jugador 2")  
+            }  
+            guardar_historial(puntajes)  
+        elif opcion_seleccionada == 2:  # Jugar vs IA  
+            juego = Movimiento(modo_ia=True)  
+            juego.movimiento_tablero()  
+            # Guardar puntajes al finalizar  
+            puntajes = {  
+                "Jugador 1": juego.score.obtener_puntos("Jugador 1"),  
+                "Jugador 2 (IA)": juego.score.obtener_puntos("Jugador 2")  
+            }  
+            guardar_historial(puntajes)  
+        elif opcion_seleccionada == 3:  # Historial  
+            os.system('cls' if os.name == 'nt' else 'clear')  
+            try:  
+                with open("historial.txt", "r") as f:  
+                    print("=== Historial de Partidas ===")  
+                    print(f.read())  
+            except FileNotFoundError:  
+                print("No hay historial de partidas.")  
+            input("Presiona Enter para continuar...")  
+        elif opcion_seleccionada == 4:  # Salir  
+            os.system('cls' if os.name == 'nt' else 'clear')  
+            print("¿Seguro que quieres salir? (s/n)")  
+            if input().lower() == 's':  
                 break
