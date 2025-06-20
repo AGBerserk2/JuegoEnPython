@@ -34,20 +34,3 @@ if __name__ == "__main__":
             print("¿Seguro que quieres salir? (s/n)")
             if input().lower() == 's':
                 break
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-

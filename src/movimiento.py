@@ -46,7 +46,7 @@ class Movimiento:
     def movimiento_tablero(self):
         while True:
             self.dibujar_tablero()
-            time.sleep(0.1)
+            keyboard.read_event()
 
             if keyboard.is_pressed('esc'):
                 break
@@ -114,8 +114,3 @@ class Movimiento:
                     print("Por favor, ingresa un número entre 0 y 9.")
             except ValueError:
                 print("Entrada inválida, por favor ingresa un número.")
-
-# Ejecutar el juego
-if __name__ == "__main__":
-    juego = Movimiento()
-    juego.movimiento_tablero()
