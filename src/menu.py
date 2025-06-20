@@ -8,7 +8,8 @@ init(autoreset=True)  # Inicializa colorama
 class Menu:
     selected_index = 0
     options = [
-        "    • Jugar",
+        "    • 1 vs 1 Jugar",
+        "    • VS Heimer!!",
         "    • Historial",
         "    • Salir 🔚"
     ]
