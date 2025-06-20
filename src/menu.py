@@ -8,8 +8,7 @@ init(autoreset=True)  # Inicializa colorama
 class Menu:
     selected_index = 0
     options = [
-        "    • VS la IA",
-        "    • 2 Jugadores",
+        "    • Jugar",
         "    • Historial",
         "    • Salir 🔚"
     ]
@@ -17,7 +16,7 @@ class Menu:
     color_fondo = Fore.WHITE
     color_seleccionado = Fore.CYAN + Style.BRIGHT
     color_texto = Fore.RED
-    
+
     @classmethod
     def mostrar_menu(cls):
         key_pressed = None
@@ -60,7 +59,7 @@ class Menu:
         print(cls.color_fondo + """
                                      ╔═════════════════════════════════════════════════════════════════════════════════╗
                                      ║                                ¿Modo de juego?                                  ║
-                                     ║                      🔷 ---     Lets  START!!!     --- 🔷                        ║
+                                     ║                      🔷 ---     Lets  START!!!    --- 🔷                        ║
                                      ║                                                                                 ║
                                      ╚═════════════════════════════════════════════════════════════════════════════════╝
 
@@ -80,3 +79,8 @@ class Menu:
                                  ═══════════════════════════════════════════════════════════════════════════════════════════
                                     """)
         print(Style.RESET_ALL)
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    opcion_seleccionada = Menu.mostrar_menu()
+    print(f"\nOpción seleccionada: {opcion_seleccionada}")
