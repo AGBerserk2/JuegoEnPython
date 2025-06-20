@@ -11,7 +11,7 @@ def guardar_historial(puntajes):
 if __name__ == "__main__":
     while True:
         opcion_seleccionada = Menu.mostrar_menu()
-        if opcion_seleccionada == 1:  # Jugar
+        if opcion_seleccionada == 2:  # Jugar
             juego = Movimiento()
             juego.movimiento_tablero()
             # Guardar puntajes al finalizar
@@ -20,7 +20,7 @@ if __name__ == "__main__":
                 "Jugador 2": juego.score.obtener_puntos("Jugador 2")
             }
             guardar_historial(puntajes)
-        elif opcion_seleccionada == 2:  # Historial
+        elif opcion_seleccionada == 3:  # Historial
             os.system('cls' if os.name == 'nt' else 'clear')
             try:
                 with open("historial.txt", "r") as f:
@@ -29,7 +29,7 @@ if __name__ == "__main__":
             except FileNotFoundError:
                 print("No hay historial de partidas.")
             input("Presiona Enter para continuar...")
-        elif opcion_seleccionada == 3:  # Salir
+        elif opcion_seleccionada == 4:  # Salir
             os.system('cls' if os.name == 'nt' else 'clear')
             print("¿Seguro que quieres salir? (s/n)")
             if input().lower() == 's':

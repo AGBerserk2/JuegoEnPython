@@ -8,7 +8,8 @@ init(autoreset=True)  # Inicializa colorama
 class Menu:
     selected_index = 0
     options = [
-        "    • Jugar",
+        "    • VS la IA",
+        "    • 2 Jugadores",
         "    • Historial",
         "    • Salir 🔚"
     ]
@@ -79,8 +80,3 @@ class Menu:
                                  ═══════════════════════════════════════════════════════════════════════════════════════════
                                     """)
         print(Style.RESET_ALL)
-
-# Ejemplo de uso
-if __name__ == "__main__":
-    opcion_seleccionada = Menu.mostrar_menu()
-    print(f"\nOpción seleccionada: {opcion_seleccionada}")
