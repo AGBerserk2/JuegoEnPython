@@ -1,4 +1,4 @@
-Blokus en Python
+![alt text](img/image.png)
 Descripción:
 Blokus es una versión sencilla y básica del juego Blokus programada en Python. El juego permite a dos jugadores colocar piezas en un tablero, siguiendo reglas básicas inspiradas en el juego original.
 
