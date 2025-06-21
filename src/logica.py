@@ -1,6 +1,8 @@
 # Verificar si el movimiento es valido y si el usuario puede moverse
 # kelvin, angel
 # logica.py
+from figuras import piezas
+from figuras import rotar_pieza
 
 class Logica:
     def __init__(self, ancho, alto):
@@ -82,13 +84,20 @@ class Logica:
                                 elif self.es_adyacente_diagonal(pieza_rotada, x, y, colocadas, jugador):
                                     return True
         return False
+     #con esto se determina si el juego acabo validando si hay uno de los jugadores puede jugar
+     #si ningun jugador puede jugar el juego acaba
+    def juego_terminado(self,colocadas,jugador1,jugador2,limite_fichas):
+        piezas_j1_colocadas = self.filtrar_colocadas_por_jugador(colocadas,jugador1)
+        piezas_j2_colocadas = self.filtrar_colocadas_por_jugador(colocadas,jugador2)
+        sin_mov_j1 = len(piezas_j1_colocadas) >= limite_fichas
+        sin_mov_j2 = len(piezas_j2_colocadas) >= limite_fichas      
+        return sin_mov_j1 and sin_mov_j2
+      
 
-    def terminar_juego(self, piezas_jugador1, piezas_jugador2, colocadas):
-        return not (self.puede_jugar(piezas_jugador1, colocadas, "Jugador 1") or
-                    self.puede_jugar(piezas_jugador2, colocadas, "Jugador 2"))
+    def mostrar_resultado(self, puntajes):
+        puntos_j1 = puntajes.get("Jugador 1",0)
+        puntos_j2 = puntajes.get("Jugador 2", puntajes.get("Jugador 2 (IA)",0))
 
-    def mostrar_resultado(self, score):
-        puntos_j1, puntos_j2 = score.obtener_puntos("Jugador 1"), score.obtener_puntos("Jugador 2")
         print("\n=== Resultado Final ===")
         print(f"Puntaje Jugador 1: {puntos_j1}")
         print(f"Puntaje Jugador 2: {puntos_j2}")

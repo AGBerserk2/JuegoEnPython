@@ -1,0 +1,3 @@
+Puntajes: {'Jugador 1': 36, 'Jugador 2 (IA)': 50}
+Puntajes: {'Jugador 1': 36, 'Jugador 2 (IA)': 50}
+Puntajes: {'Jugador 1': 33, 'Jugador 2 (IA)': 50}
