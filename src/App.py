@@ -10,7 +10,8 @@ def guardar_historial(puntajes):
    
   
 if __name__ == "__main__":  
-    while True:  
+    
+     while True:  
         opcion_seleccionada = Menu.mostrar_menu()  
         termino = False
 

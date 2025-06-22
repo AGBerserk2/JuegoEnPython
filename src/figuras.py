@@ -1,17 +1,17 @@
-
+ 
 def rotar_pieza(pieza):
     # Transponer y luego invertir filas (rotación 90° horaria)
     return [list(fila) for fila in zip(*pieza[::-1])]
-
+ 
 def dibujar_pieza(pieza):
     for fila in pieza:
         print(''.join('⬜' if celda == 1 else '  ' for celda in fila))
-    print()  # Espacio entre piezas
+        print()  # Espacio entre piezas
 
-def piezas(figura):
+def piezas (figura):
     match figura:
         case 1:
-            return [[1]]
+             return [[1]]
         case 2:
             return [[1, 1]]
         case 3:

@@ -20,10 +20,13 @@ class Movimiento:
         self.logica = Logica(self.TABLERO_ANCHO, self.TABLERO_ALTO) 
         #aqui se coloca el limite de ficha deseado 
         self.limite_fichas = 10
+        self.modo_ia = modo_ia
         # Nuevas líneas para IA  
-        self.modo_ia = modo_ia  
-        if modo_ia:  
-            self.piezas_disponibles_ia = [piezas(i) for i in range(10)]  
+          # ====== CÓDIGO AGREGADO: Inicializar contador de fichas usadas ======
+        self.fichas_usadas = {
+            "Jugador 1": {i: 0 for i in range(10)},
+            "Jugador 2": {i: 0 for i in range(10)}
+        }
   
     def dibujar_tablero(self):  
         os.system('cls' if os.name == 'nt' else 'clear')  
@@ -109,6 +112,12 @@ class Movimiento:
                 piezas_jugador = self.logica.filtrar_colocadas_por_jugador(self.colocadas, self.jugador_actual)  
                 turno = len(piezas_jugador)  
                 
+                # ====== CÓDIGO AGREGADO: Verificar límite de uso de la pieza ======
+                indice_pieza_actual = self._identificar_indice_pieza(self.pieza)
+                if self.fichas_usadas[self.jugador_actual][indice_pieza_actual] >= 2:
+                    print(f"Ya usaste 2 veces la pieza {indice_pieza_actual}. Escoge otra.")
+                    time.sleep(1.5)
+                    continue
 
                 #De aqui en adelante se establecen los movimientos
                 if not self.logica.es_posicion_valida(self.pieza, self.x, self.y, self.colocadas):  
@@ -134,7 +143,10 @@ class Movimiento:
   
                 # Colocar pieza  
                 self.colocadas.append((self.pieza, self.x, self.y, self.jugador_actual))  
-                self.score.sumar_puntos_por_pieza(self.jugador_actual, self.pieza)  
+                self.score.sumar_puntos_por_pieza(self.jugador_actual, self.pieza) 
+                  # CÓDIGO AGREGADO: Aumentar contador de uso de pieza 
+                self.fichas_usadas[self.jugador_actual][indice_pieza_actual] += 1
+ 
                 self.pieza = piezas(random.randint(0,9))  
                 self.x, self.y = 0, 0  
                 self.jugador_actual = "Jugador 2" if self.jugador_actual == "Jugador 1" else "Jugador 1"  
@@ -145,7 +157,50 @@ class Movimiento:
                 print("Cambiando ficha...")  
                 figura_nueva = self.pedir_figura()  
                 self.pieza = piezas(figura_nueva)  
-                self.x, self.y = 0, 0  
+                self.x, self.y = 0, 0 
+
+    # ====== CÓDIGO AGREGADO Y CORREGIDO ======
+    def pedir_figura(self):
+     while True:
+         os.system('cls' if os.name == 'nt' else 'clear')
+         print(f"Fichas disponibles para {self.jugador_actual}:\n")
+         disponibles = []
+         for i in range(10):
+             if self.fichas_usadas[self.jugador_actual][i] < 2:
+                disponibles.append(i)
+                print(f"Opción {i} (Restantes: {2 - self.fichas_usadas[self.jugador_actual][i]}):")
+                self.dibujar_pieza(piezas(i))
+
+         if not disponibles:
+            print("No hay fichas disponibles.")
+            time.sleep(2)
+            return None
+
+         try:
+              seleccion = int(input("Selecciona el número de la figura: "))
+              if seleccion in disponibles:
+                 return seleccion
+              else:
+                  print("Opción inválida.")
+                  time.sleep(1.5)
+         except ValueError:
+                 print("Entrada inválida.")
+                 time.sleep(1.5)
+
+
+         # ====== CÓDIGO AGREGADO: Dibujar pieza en consola ======
+    def dibujar_pieza(self, pieza):
+        for fila in pieza:
+           print(''.join('⬜' if celda == 1 else '  ' for celda in fila))
+           print()
+
+    # ====== CÓDIGO AGREGADO: Identificar índice de la pieza actual ======
+    def _identificar_indice_pieza(self, pieza_actual):
+        for i in range(10):
+            if pieza_actual == piezas(i):
+             return i
+        return -1       
+                   
   
     # NUEVO MÉTODO: Lógica para el turno de la IA  
     def _ejecutar_turno_ia(self): 
@@ -178,7 +233,9 @@ class Movimiento:
         mejores_movimientos = []  
           
         # Usar las mismas piezas disponibles que el sistema original  
-        for i in range(10):  
+        for i in range(10): 
+            if self.fichas_usadas[self.jugador_actual][i] >= 2:
+               continue 
             pieza = piezas(i)  
             for rot in range(4):  # Probar 4 rotaciones  
                 pieza_rotada = pieza  
@@ -190,13 +247,15 @@ class Movimiento:
                     for x in range(self.TABLERO_ANCHO):  
                         if self._es_movimiento_valido_ia(pieza_rotada, x, y):  
                             puntos = sum(celda == 1 for fila in pieza_rotada for celda in fila)  
-                            mejores_movimientos.append((pieza_rotada, x, y, puntos))  
+                            mejores_movimientos.append((pieza_rotada, x, y, puntos,i))  
           
         if mejores_movimientos:  
             # Ordenar por puntos y tomar el mejor  
             mejores_movimientos.sort(key=lambda x: x[3], reverse=True)  
-            return mejores_movimientos[0][:3]  # pieza, x, y  
-        return None  
+            mejor = mejores_movimientos[0]
+            self.fichas_usadas[self.jugador_actual][mejor[4]] += 1
+            return mejor[:3]  # pieza, x, y  
+      
   
     # NUEVO MÉTODO: Validación de movimientos para IA  
     def _es_movimiento_valido_ia(self, pieza, x, y):  
@@ -214,19 +273,5 @@ class Movimiento:
         else:  
             return self.logica.es_adyacente_diagonal(pieza, x, y, self.colocadas, self.jugador_actual)  
   
-    def pedir_figura(self):  
-        while True:  
-            try:  
-                os.system('cls' if os.name == 'nt' else 'clear')  
-                figura = int(input("Elige una figura (0-9): "))  
-                if 0 <= figura <= 9:  
-                    return figura  
-                else:  
-                    print("Por favor, ingresa un número entre 0 y 9.")  
-            except ValueError:  
-                print("Entrada inválida, por favor ingresa un número.")  
+    
   
-# Ejecutar el juego  
-if __name__ == "__main__":  
-    juego = Movimiento()  
-    juego.movimiento_tablero()
