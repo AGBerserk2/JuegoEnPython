@@ -4,7 +4,7 @@ import time
 import keyboard  
 from score import Score  
 from logica import Logica  
-import random  
+import random
   
 class Movimiento:  
     def __init__(self, modo_ia=False):
@@ -18,15 +18,14 @@ class Movimiento:
         self.score.registrar_jugador("Jugador 1")  
         self.score.registrar_jugador("Jugador 2")  
         self.logica = Logica(self.TABLERO_ANCHO, self.TABLERO_ALTO) 
-        #aqui se coloca el limite de ficha deseado 
         self.limite_fichas = 10
         self.modo_ia = modo_ia
         # Nuevas líneas para IA  
-          # ====== CÓDIGO AGREGADO: Inicializar contador de fichas usadas ======
-        self.fichas_usadas = {
-            "Jugador 1": {i: 0 for i in range(10)},
-            "Jugador 2": {i: 0 for i in range(10)}
-        }
+        self.fichas_usadas = {  
+        "Jugador 1": [0] * 10,  
+        "Jugador 2": [0] * 10  
+    }  
+        self.limite_fichas = 20 
   
     def dibujar_tablero(self):  
         os.system('cls' if os.name == 'nt' else 'clear')  
@@ -160,32 +159,33 @@ class Movimiento:
                 self.x, self.y = 0, 0 
 
     # ====== CÓDIGO AGREGADO Y CORREGIDO ======
-    def pedir_figura(self):
-     while True:
-         os.system('cls' if os.name == 'nt' else 'clear')
-         print(f"Fichas disponibles para {self.jugador_actual}:\n")
-         disponibles = []
-         for i in range(10):
-             if self.fichas_usadas[self.jugador_actual][i] < 2:
-                disponibles.append(i)
-                print(f"Opción {i} (Restantes: {2 - self.fichas_usadas[self.jugador_actual][i]}):")
-                self.dibujar_pieza(piezas(i))
-
-         if not disponibles:
-            print("No hay fichas disponibles.")
-            time.sleep(2)
-            return None
-
-         try:
-              seleccion = int(input("Selecciona el número de la figura: "))
-              if seleccion in disponibles:
-                 return seleccion
-              else:
-                  print("Opción inválida.")
-                  time.sleep(1.5)
-         except ValueError:
-                 print("Entrada inválida.")
-                 time.sleep(1.5)
+    def pedir_figura(self):  
+        while True:  
+            os.system('cls' if os.name == 'nt' else 'clear')  
+            print(f"Fichas disponibles para {self.jugador_actual}:\n")  
+            disponibles = []  
+          
+            for i in range(10):  
+                if self.fichas_usadas[self.jugador_actual][i] < 2:  
+                    disponibles.append(i)  
+                    print(f"Opción {i} (Restantes: {2 - self.fichas_usadas[self.jugador_actual][i]}):")  
+                    self.dibujar_pieza(piezas(i))  
+  
+            if not disponibles:  
+                print("No hay fichas disponibles. Generando pieza aleatoria.")  
+                time.sleep(2)  
+                return random.randint(0, 9)  # Fallback a pieza aleatoria  
+  
+            try:  
+                seleccion = int(input("Selecciona el número de la figura: "))  
+                if seleccion in disponibles:  
+                    return seleccion  
+                else:  
+                    print("Opción inválida.")  
+                    time.sleep(1.5)  
+            except ValueError:  
+                print("Entrada inválida.")  
+                time.sleep(1.5)
 
 
          # ====== CÓDIGO AGREGADO: Dibujar pieza en consola ======
@@ -195,13 +195,19 @@ class Movimiento:
            print()
 
     # ====== CÓDIGO AGREGADO: Identificar índice de la pieza actual ======
-    def _identificar_indice_pieza(self, pieza_actual):
-        for i in range(10):
-            if pieza_actual == piezas(i):
-             return i
-        return -1       
-                   
-  
+    def _identificar_indice_pieza(self, pieza_actual):    
+        for i in range(10):    
+            pieza_original = piezas(i)  # Primero declarar pieza_original  
+            pieza_test = pieza_original   # Luego asignarla a pieza_test  
+              
+            for _ in range(4):    
+                if pieza_actual == pieza_test:    
+                    return i    
+                pieza_test = rotar_pieza(pieza_test)    
+      
+        print(f"Advertencia: No se pudo identificar la pieza, usando índice 0")    
+        return 0
+    
     # NUEVO MÉTODO: Lógica para el turno de la IA  
     def _ejecutar_turno_ia(self): 
 
