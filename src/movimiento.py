@@ -1,4 +1,6 @@
 from figuras import piezas, rotar_pieza  
+from AgenteMinimax import AgenteMinimax
+from AgenteAleatorio import AgenteAleatorio
 import os  
 import time  
 import keyboard  
@@ -7,7 +9,7 @@ from logica import Logica
 import random
   
 class Movimiento:  
-    def __init__(self, modo_ia=False):
+    def __init__(self, modo_ia=False,tipo_ia="minimax",nombre_Ia = "IA"):
         self.TABLERO_ALTO = 15  
         self.TABLERO_ANCHO = 20  
         self.x, self.y = 0, 0  
@@ -18,15 +20,31 @@ class Movimiento:
         self.score.registrar_jugador("Jugador 1")  
         self.score.registrar_jugador("Jugador 2")  
         self.logica = Logica(self.TABLERO_ANCHO, self.TABLERO_ALTO) 
-        self.limite_fichas = 10
+        self.limite_fichas = 21
         self.modo_ia = modo_ia
+        self.tipo_ia = tipo_ia.lower()
+        self.nombre_jugador2 = nombre_Ia
+        self.piezas_disponibles = [piezas(i) for i in range(10)] 
+
+        if self.modo_ia:
+          if self.tipo_ia == "minimax":
+             from AgenteMinimax import AgenteMinimax
+             self.agente_minimax = AgenteMinimax("Jugador 2", self.logica, self.piezas_disponibles, tiempo_limite=2.0)
+          elif self.tipo_ia in ["aleatorio", "greedy"]:
+               from AgenteAleatorio import AgenteAleatorio
+               self.agente_minimax = AgenteAleatorio("Jugador 2", self.logica, self.piezas_disponibles)
+          else:
+             raise ValueError(f"Tipo de IA no reconocido: {self.tipo_ia}")
+         
+
+
+
         # Nuevas líneas para IA  
         self.fichas_usadas = {  
         "Jugador 1": [0] * 10,  
         "Jugador 2": [0] * 10  
     }  
-        self.limite_fichas = 20 
-  
+
     def dibujar_tablero(self):  
         os.system('cls' if os.name == 'nt' else 'clear')  
         tablero = [['⬜' for _ in range(self.TABLERO_ANCHO)] for _ in range(self.TABLERO_ALTO)]  
@@ -49,11 +67,15 @@ class Movimiento:
         for fila in tablero:  
             print(''.join(fila))  
   
-        print(f"\nTurno de: {self.jugador_actual}")  
-        if self.modo_ia and self.jugador_actual == "Jugador 2":  
-            print("🤖 IA está jugando...")  
+        nombre_turno = self.jugador_actual
+        if self.jugador_actual == "Jugador 2":
+           nombre_turno = self.nombre_jugador2
+           print(f"\nTurno de: {nombre_turno}")
+        if self.modo_ia and self.jugador_actual == "Jugador 2":
+           print(f"🤖 {self.nombre_jugador2} está jugando...") 
+
         print("Puntaje Jugador 1:", self.score.obtener_puntos("Jugador 1"))  
-        print("Puntaje Jugador 2 (IA):" if self.modo_ia else "Puntaje Jugador 2:", self.score.obtener_puntos("Jugador 2"))  
+        print(f"Puntaje {self.nombre_jugador2}:", self.score.obtener_puntos("Jugador 2")) 
   
     def movimiento_tablero(self):  
         while True:  
@@ -211,27 +233,39 @@ class Movimiento:
     # NUEVO MÉTODO: Lógica para el turno de la IA  
     def _ejecutar_turno_ia(self): 
 
-        print("🤖 IA está pensando...")  
+        print(f"{self.nombre_jugador2} está pensando...")  
         piezas_ia = self.logica.filtrar_colocadas_por_jugador(self.colocadas, self.jugador_actual)
         if len(piezas_ia) >= self.limite_fichas:
-            print("🤖 IA ya colocó el máximo de piezas. Se pasa el turno.")
+            print(f"{self.nombre_jugador2} ya colocó el máximo de piezas. Se pasa el turno.")
             self.jugador_actual = "Jugador 1"
             return
         
         time.sleep(1.5)  # Pausa dramática  
+           
+        
+
+        if self.tipo_ia in ["minimax", "aleatorio", "greedy"]:
+           mejor_movimiento = self.agente_minimax.encontrar_mejor_jugada(
+           self.colocadas,
+           self.fichas_usadas["Jugador 2"]
+        )
+        else:
+          mejor_movimiento = self._encontrar_mejor_movimiento_ia()
+
           
-        mejor_movimiento = self._encontrar_mejor_movimiento_ia()  
-          
-        if mejor_movimiento:  
-            pieza, x, y = mejor_movimiento  
-            self.colocadas.append((pieza, x, y, self.jugador_actual))  
-            self.score.sumar_puntos_por_pieza(self.jugador_actual, pieza)  
-            print(f"🤖 IA colocó pieza en posición ({x}, {y})")  
-            self.jugador_actual = "Jugador 1"  
+        if mejor_movimiento:
+          pieza, x, y = mejor_movimiento
+          self.colocadas.append((pieza, x, y, self.jugador_actual))
+          self.score.sumar_puntos_por_pieza(self.jugador_actual, pieza)
+          index_pieza = self._identificar_indice_pieza(pieza)
+          self.fichas_usadas[self.jugador_actual][index_pieza] += 1
+          print(f"🤖 {self.nombre_jugador2} colocó pieza en posición ({x}, {y})")  
         else:  
-            print("🤖 IA no puede hacer más movimientos")  
+            print(f"🤖 {self.nombre_jugador2} no puede hacer más movimientos")  
             self.jugador_actual = "Jugador 1"  
           
+        self.jugador_actual = "Jugador 1"
+
         time.sleep(2)  # Mostrar resultado  
   
     # NUEVO MÉTODO: Algoritmo de decisión de la IA  
