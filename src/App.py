@@ -1,5 +1,6 @@
 from menu import Menu  
 from movimiento import Movimiento 
+from IAvsIA import JuegoIA 
 import keyboard 
 import os  
   
@@ -32,24 +33,8 @@ if __name__ == "__main__":
             input("\nPresiona cualquier tecla para continuar")
             while keyboard.is_pressed("enter"):
              pass
-
-        elif opcion_seleccionada == 2:  # Jugar vs IA  
-            juego = Movimiento(modo_ia=True, tipo_ia="Simple",nombre_Ia="IA") 
-            termino = juego.movimiento_tablero()
-            if termino:
-                 # Guardar puntajes al finalizar  
-             puntajes = {  
-                "Jugador 1": juego.score.obtener_puntos("Jugador 1"),  
-                "Jugador 2 (IA)": juego.score.obtener_puntos("Jugador 2")  
-             } 
-            juego.logica.mostrar_resultado(puntajes) 
-            guardar_historial(puntajes) 
-            
-            input("\nPresiona cualquier tecla para continuar") 
-            while keyboard.is_pressed("enter"):
-               pass
            
-        elif opcion_seleccionada == 3:
+        elif opcion_seleccionada == 2:
              juego = Movimiento(modo_ia=True, tipo_ia="minimax", nombre_Ia="MiniMax")
              termino = juego.movimiento_tablero()
 
@@ -67,7 +52,7 @@ if __name__ == "__main__":
                pass
    
        
-        elif opcion_seleccionada == 4:  # Jugar vs IA Aleatoria
+        elif opcion_seleccionada == 3:  # Jugar vs IA Aleatoria
             juego = Movimiento(modo_ia=True, tipo_ia="aleatorio", nombre_Ia="Aleatorio")
             termino = juego.movimiento_tablero()
             if termino:
@@ -82,7 +67,7 @@ if __name__ == "__main__":
             while keyboard.is_pressed("enter"):
               pass 
 
-        elif opcion_seleccionada == 5:  # Jugar vs IA Greedy
+        elif opcion_seleccionada == 4:  # Jugar vs IA Greedy
              juego = Movimiento(modo_ia=True, tipo_ia="greedy", nombre_Ia="Greedy")
              termino = juego.movimiento_tablero()
              if termino:
@@ -95,6 +80,16 @@ if __name__ == "__main__":
              input("\nPresiona cualquier tecla para continuar")
              while keyboard.is_pressed("enter"):
               pass
+             
+        if opcion_seleccionada == 5:  # VS la IA (IA vs IA)  
+            IAvsIA = JuegoIA()  
+            IAvsIA.jugar_automatico()  
+            # Guardar puntajes al finalizar  
+            puntajes = {  
+                "IA 1": IAvsIA.score.obtener_puntos("Jugador 1"),  
+                "IA 2": IAvsIA.score.obtener_puntos("Jugador 2")  
+            }  
+            guardar_historial(puntajes)  
 
         elif opcion_seleccionada == 6:  # Historial  
             os.system('cls' if os.name == 'nt' else 'clear')  
@@ -106,7 +101,7 @@ if __name__ == "__main__":
                 print("No hay historial de partidas.")  
             input("Presiona Enter para continuar...")  
 
-        elif opcion_seleccionada == 7:  # Salir  
+        elif opcion_seleccionada == 9:  # Salir  
             os.system('cls' if os.name == 'nt' else 'clear')  
             print("¿Seguro que quieres salir? (s/n)")  
             if input().lower() == 's':  
