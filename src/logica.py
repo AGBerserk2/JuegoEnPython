@@ -86,13 +86,12 @@ class Logica:
         return False
      #con esto se determina si el juego acabo validando si hay uno de los jugadores puede jugar
      #si ningun jugador puede jugar el juego acaba
-    def juego_terminado(self,colocadas,jugador1,jugador2,limite_fichas):
-        piezas_j1_colocadas = self.filtrar_colocadas_por_jugador(colocadas,jugador1)
-        piezas_j2_colocadas = self.filtrar_colocadas_por_jugador(colocadas,jugador2)
-        sin_mov_j1 = len(piezas_j1_colocadas) >= limite_fichas
-        sin_mov_j2 = len(piezas_j2_colocadas) >= limite_fichas      
-        return sin_mov_j1 and sin_mov_j2
-      
+    def juego_terminado(self, colocadas, jugador1, jugador2, limite_fichas, piezas_disponibles):
+     piezas_j1_colocadas = self.filtrar_colocadas_por_jugador(colocadas, jugador1)
+     piezas_j2_colocadas = self.filtrar_colocadas_por_jugador(colocadas, jugador2)
+     sin_mov_j1 = len(piezas_j1_colocadas) >= limite_fichas or not self.puede_jugar(piezas_disponibles, colocadas, jugador1)
+     sin_mov_j2 = len(piezas_j2_colocadas) >= limite_fichas or not self.puede_jugar(piezas_disponibles, colocadas, jugador2)
+     return sin_mov_j1 and sin_mov_j2
 
     def mostrar_resultado(self, puntajes, nombre_jugador2= "Jugador 2"):
         puntos_j1 = puntajes.get("Jugador 1", 0)
