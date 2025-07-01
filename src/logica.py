@@ -94,7 +94,7 @@ class Logica:
         return sin_mov_j1 and sin_mov_j2
       
 
-    def mostrar_resultado(self, puntajes, nombre_jugador2="Jugador 2"):
+    def mostrar_resultado(self, puntajes, nombre_jugador2= "Jugador 2"):
         puntos_j1 = puntajes.get("Jugador 1", 0)
         puntos_j2 = puntajes.get("Jugador 2", puntajes.get("Jugador 2 (IA)", 0))
 
