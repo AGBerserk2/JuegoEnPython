@@ -104,7 +104,7 @@ class Movimiento:
 
                  time.sleep(1.5)
 
-                 if self.logica.juego_terminado(self.colocadas, "Jugador 1", "Jugador 2", self.limite_fichas):
+                 if self.logica.juego_terminado(self.colocadas, "Jugador 1", "Jugador 2", self.limite_fichas, self.piezas_disponibles):
                     os.system('cls' if os.name == 'nt' else 'clear')
                     self.dibujar_tablero()
                     print("Termino el juego")
