@@ -9,11 +9,9 @@ class Menu:
     selected_index = 0
     options = [
         "    • 1 vs 1 Jugar",
-        "    • VS Heimer!!",
         "    • VS Minimax++",
         "    • VS Aleatorio",
         "    • VS Greedy",
-        "    • VS Jugador Malo",
         "    • IA Vs IA",
         "    • Historial",
         "    • Salir 🔚"

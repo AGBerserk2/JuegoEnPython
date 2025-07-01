@@ -12,12 +12,12 @@ def piezas (figura):
     match figura:
         case 1:
              return [[1]]
-        case 2:
+        case 2: 
             return [[1, 1]]
         case 3:
-            return [[1, 1, 1]]
+            return  [[1, 1, 1]]
         case 4:
-            return [
+            return   [
                 [1, 0],
                 [1, 1]
             ]
@@ -28,7 +28,7 @@ def piezas (figura):
             ]
         case 6:
             return [
-                [1, 1, 1],
+                [1,  1, 1],
                 [0, 1, 0]
             ]
         case 7:
