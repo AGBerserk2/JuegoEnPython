@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
 
         elif opcion_seleccionada == 2:  # Jugar vs IA  
-            juego = Movimiento(modo_ia=True, tipo_ia="IA",nombre_Ia="IA") 
+            juego = Movimiento(modo_ia=True, tipo_ia="aleatorio", nombre_Ia="IA") 
             termino = juego.movimiento_tablero()
             if termino:
                  # Guardar puntajes al finalizar  
